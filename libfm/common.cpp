@@ -25,6 +25,10 @@
 
 #if defined(__FreeBSD__) || defined(__NetBSD__) || defined(__OpenBSD__) || defined(__APPLE__)
 #include <sys/mount.h>
+#elif defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#if defined(__MINGW32__)
+#include <vfs-win.hpp>
+#endif
 #else
 #include <sys/vfs.h>
 #endif
@@ -457,7 +461,7 @@ Common::DragMode Common::int2dad(int value)
     case 0:
         return DM_UNKNOWN;
     case 1:
-        return DM_COPY;
+        return DM_COPY_;
     case 2:
         return DM_MOVE;
     case 3:

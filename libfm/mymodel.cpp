@@ -20,9 +20,17 @@
 ****************************************************************************/
 
 #include "mymodel.h"
+
+#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
+#if defined(__MINGW32__)
+#include <inotify-win.hpp>
+#include <ioctl-win.hpp>
+#endif
+#else
 #include <sys/inotify.h>
-#include <unistd.h>
 #include <sys/ioctl.h>
+#endif
+#include <unistd.h>
 #include <QApplication>
 #include <QMessageBox>
 #include "fileutils.h"

@@ -1,7 +1,15 @@
 TEMPLATE = subdirs
 CONFIG -= ordered
-SUBDIRS += libfm fm
+SUBDIRS += libfm
 fm.depends += libfm
+
+win32-g++ {
+    SUBDIRS += third_party/inotify-win \
+        third_party/ioctl-win \
+        third_party/vfs-win
+}
+
+SUBDIRS += fm
 
 CONFIG(v7) {
     SUBDIRS += fm7

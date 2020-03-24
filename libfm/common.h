@@ -48,7 +48,7 @@ class Common
 public:
     enum DragMode {
       DM_UNKNOWN = 0,
-      DM_COPY,
+      DM_COPY_, // DM_COPY already defined in windows
       DM_MOVE,
       DM_LINK
     };

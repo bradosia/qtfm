@@ -9,6 +9,12 @@ TEMPLATE = app
 
 INCLUDEPATH += src $${top_srcdir}/libfm $${top_srcdir}/libfm/qtcopydialog
 
+win32-g++ {
+    INCLUDEPATH += $${top_srcdir}/third_party/inotify-win/src \
+    $${top_srcdir}/third_party/ioctl-win/src \
+    $${top_srcdir}/third_party/vfs-win/src
+}
+
 DEFINES += APP=\"\\\"$${TARGET}\\\"\"
 DEFINES += APP_NAME=\"\\\"$${TARGET_NAME}\\\"\"
 DEFINES += APP_VERSION=\"\\\"$${VERSION}\\\"\"
@@ -60,6 +66,30 @@ unix:!macx {
         DEFINES += NO_UDISKS
     }
     !CONFIG(no_dbus) : QT += dbus
+    !CONFIG(staticlib): QMAKE_RPATHDIR += $ORIGIN/../lib$${LIBSUFFIX}
+}
+
+win32-g++ {
+    DESTDIR = $${top_builddir}/bin
+    OBJECTS_DIR = $${DESTDIR}/.obj_fm
+    MOC_DIR = $${DESTDIR}/.moc_fm
+    RCC_DIR = $${DESTDIR}/.qrc_fm
+    LIBS += -L$${top_builddir}/lib$${LIBSUFFIX} -lQtFM -lvfs-win -linotify-win -lioctl-win -lws2_32
+
+    target.path = $${PREFIX}/bin
+    desktop.files += $${TARGET}.desktop
+    desktop.path += $${PREFIX}/share/applications
+    man.files += qtfm.1
+    man.path += $${MANDIR}/man1
+    INSTALLS += target desktop man
+
+    hicolor.files = $${top_srcdir}/share/hicolor
+    hicolor.path = $${PREFIX}/share/icons
+    INSTALLS += hicolor
+
+    DEFINES += NO_DBUS
+    DEFINES += NO_UDISKS
+
     !CONFIG(staticlib): QMAKE_RPATHDIR += $ORIGIN/../lib$${LIBSUFFIX}
 }
 

@@ -6,6 +6,12 @@ TARGET = QtFM
 VERSION = $${QTFM_MAJOR}.$${QTFM_MINOR}.$${QTFM_PATCH}
 TEMPLATE = lib
 
+win32-g++ {
+    INCLUDEPATH += $${top_srcdir}/third_party/inotify-win/src \
+    $${top_srcdir}/third_party/ioctl-win/src \
+    $${top_srcdir}/third_party/vfs-win/src
+}
+
 SOURCES += \
     applicationdialog.cpp \
     customactionsmanager.cpp \
@@ -76,6 +82,37 @@ unix:!macx {
                 service.h
         QT += dbus
     }
+    CONFIG(with_includes): CONFIG += create_prl no_install_prl create_pc
+
+    target.path = $${LIBDIR}
+    docs.path = $${DOCDIR}
+    docs.files += \
+                $${top_srcdir}/LICENSE \
+                $${top_srcdir}/README.md \
+                $${top_srcdir}/AUTHORS \
+                $${top_srcdir}/ChangeLog
+
+    CONFIG(with_includes) {
+        target_inc.path = $${PREFIX}/include/lib$${TARGET}
+        target_inc.files = $${HEADERS}
+        QMAKE_PKGCONFIG_NAME = lib$${TARGET}
+        QMAKE_PKGCONFIG_DESCRIPTION = $${TARGET} library
+        QMAKE_PKGCONFIG_LIBDIR = $$target.path
+        QMAKE_PKGCONFIG_INCDIR = $$target_inc.path
+        QMAKE_PKGCONFIG_DESTDIR = pkgconfig
+    }
+
+    INSTALLS += docs
+    !CONFIG(staticlib): INSTALLS += target
+    CONFIG(with_includes): INSTALLS += target_inc
+}
+
+win32-g++ {
+    DESTDIR = $${top_builddir}/lib$${LIBSUFFIX}
+    OBJECTS_DIR = $${DESTDIR}/.obj_libfm
+    MOC_DIR = $${DESTDIR}/.moc_libfm
+    RCC_DIR = $${DESTDIR}/.qrc_libfm
+
     CONFIG(with_includes): CONFIG += create_prl no_install_prl create_pc
 
     target.path = $${LIBDIR}

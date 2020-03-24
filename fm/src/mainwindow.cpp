@@ -1031,7 +1031,7 @@ void MainWindow::dragLauncher(const QMimeData *data, const QString &newPath,
     if (box.clickedButton() == move) {
       dragMode = Common::DM_MOVE;
     } else if (box.clickedButton() == copy) {
-      dragMode = Common::DM_COPY;
+      dragMode = Common::DM_COPY_;
     } else if (box.clickedButton() == link) {
       dragMode = Common::DM_LINK;
     } else if (box.clickedButton() == canc) {

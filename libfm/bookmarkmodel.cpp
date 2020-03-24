@@ -161,7 +161,7 @@ bool bookmarkmodel::dropMimeData(const QMimeData * data,
         if (box.clickedButton() == move) {
             mode = Common::DM_MOVE;
         } else if (box.clickedButton() == copy) {
-            mode = Common::DM_COPY;
+            mode = Common::DM_COPY_;
         } else if (box.clickedButton() == link) {
             mode = Common::DM_LINK;
         } else if (box.clickedButton() == canc) {
